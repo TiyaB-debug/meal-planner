@@ -1,38 +1,112 @@
-.App {
+/* App.css */
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
   text-align: center;
+  font-size: 36px;
+  color: #2c3e50;
+  margin-bottom: 40px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.input-group {
+  margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+button {
+  background-color: #3498db;
   color: white;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+button:disabled {
+  background-color: #ccc;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button:hover {
+  background-color: #2980b9;
+}
+
+.meal-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.meal-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.meal-card:hover {
+  transform: translateY(-10px);
+}
+
+.meal-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.meal-info {
+  padding: 15px;
+}
+
+.meal-info h3 {
+  font-size: 20px;
+  color: #2c3e50;
+}
+
+.recipe-link {
+  display: block;
+  margin-top: 10px;
+  color: #3498db;
+  text-decoration: none;
+}
+
+.recipe-link:hover {
+  text-decoration: underline;
+}
+
+.recipe-details {
+  margin-top: 20px;
+}
+
+.ingredients, .instructions {
+  margin-top: 10px;
+}
+
+.ingredients ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ingredients li {
+  background: #ecf0f1;
+  margin: 5px 0;
 }
