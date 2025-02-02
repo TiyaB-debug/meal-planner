@@ -1,6 +1,8 @@
 import React from 'react';
 import Header from './components/Header';
 import MealPlanner from './components/MealPlanner';
+import './App.css';
+
 
 function App() {
   return (

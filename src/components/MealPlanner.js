@@ -11,7 +11,7 @@ const MealPlanner = () => {
   const [recipeDetails, setRecipeDetails] = useState({});
   const [expandedRecipe, setExpandedRecipe] = useState(null); // Track expanded recipe
 
-  const SPOONACULAR_API_KEY = '797bc5639c3d4115a9464c15d3056484'; // Replace with your API key
+  const SPOONACULAR_API_KEY = '74f8c3d8b566423cbd34749974ddc3bb'; // Replace with your API key
 
   const fetchMeals = async () => {
     setLoading(true);
@@ -42,7 +42,7 @@ const MealPlanner = () => {
 
   return (
     <div className="meal-planner">
-      <h1 className="title">Healthy Meal Suggestions</h1>
+      <h1 className="title">Healthy Eating, Made Simple.</h1>
 
       <div className="input-group">
         <label>

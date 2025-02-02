@@ -34,7 +34,7 @@ input, select, button {
 }
 
 button {
-  background-color: #3498db;
+  background-color: #ff94c1;
   color: white;
   cursor: pointer;
   border: none;
@@ -109,4 +109,14 @@ button:hover {
 .ingredients li {
   background: #ecf0f1;
   margin: 5px 0;
+}
+.recipe-card {
+  background: #FFEBEE; /* Light peach */
+  border-radius: 10px;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.2s;
+  max-width: 100%;
+  min-width: 250px;
 }
