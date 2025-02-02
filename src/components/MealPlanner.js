@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../styles/MealPlanner.css'; // Assuming you have specific styles for MealPlanner
+import '../styles/MealPlanner.css'; // Assuming styles are in this file
 
 const MealPlanner = () => {
   const [mealData, setMealData] = useState([]);
@@ -9,10 +9,10 @@ const MealPlanner = () => {
   const [ingredients, setIngredients] = useState('');
   const [loading, setLoading] = useState(false);
   const [recipeDetails, setRecipeDetails] = useState({});
+  const [expandedRecipe, setExpandedRecipe] = useState(null); // Track expanded recipe
 
-  const SPOONACULAR_API_KEY = 'be8be7ce3035461f9a30df2287b7b355'; // Replace with your Spoonacular API Key
+  const SPOONACULAR_API_KEY = '797bc5639c3d4115a9464c15d3056484'; // Replace with your API key
 
-  // Fetch data from Spoonacular API
   const fetchMeals = async () => {
     setLoading(true);
     const url = `https://api.spoonacular.com/recipes/complexSearch?apiKey=${SPOONACULAR_API_KEY}&query=${ingredients}&diet=${diet}&intolerances=${allergy}&number=10`;
@@ -21,16 +21,18 @@ const MealPlanner = () => {
       const response = await axios.get(url);
       const mealIds = response.data.results.map(meal => meal.id);
 
-      // Now, fetch full recipe details for each meal
       const recipePromises = mealIds.map(id =>
         axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${SPOONACULAR_API_KEY}`)
       );
 
       const recipeResponses = await Promise.all(recipePromises);
-      const recipes = recipeResponses.map(res => res.data);
+      const recipes = recipeResponses.reduce((acc, res) => {
+        acc[res.data.id] = res.data; 
+        return acc;
+      }, {});
 
       setMealData(response.data.results);
-      setRecipeDetails(recipes); // Store the full recipe details
+      setRecipeDetails(recipes);
     } catch (error) {
       console.error("Error fetching meals:", error);
     } finally {
@@ -86,39 +88,45 @@ const MealPlanner = () => {
         {loading ? 'Loading...' : 'Find Meals'}
       </button>
 
-      <div className="meal-list">
+      <div className="recipe-list">
         {mealData.length > 0 ? (
-          <ul>
-            {mealData.map((meal, index) => (
-              <li key={index} className="meal-card">
-                <div className="meal-image">
-                  <img src={meal.image} alt={meal.title} />
-                </div>
-                <div className="meal-info">
-                  <h3>{meal.title}</h3>
+          mealData.map((meal) => (
+            <div key={meal.id} className="recipe-card">
+              <div className="meal-image">
+                <img src={meal.image} alt={meal.title} />
+              </div>
+              <div className="meal-info">
+                <h3>{meal.title}</h3>
 
-                  {/* Displaying full recipe details */}
-                  {recipeDetails[index] && (
-                    <div className="recipe-details">
-                      <div className="ingredients">
-                        <h4>Ingredients:</h4>
-                        <ul>
-                          {recipeDetails[index].extendedIngredients.map((ingredient, i) => (
-                            <li key={i}>{ingredient.name}</li>
-                          ))}
-                        </ul>
-                      </div>
+                {/* Button to toggle recipe details */}
+                <button 
+                  className="view-recipe-btn"
+                  onClick={() => setExpandedRecipe(expandedRecipe === meal.id ? null : meal.id)}
+                >
+                  {expandedRecipe === meal.id ? "Hide Recipe" : "View Recipe"}
+                </button>
 
-                      <div className="instructions">
-                        <h4>Instructions:</h4>
-                        <div dangerouslySetInnerHTML={{ __html: recipeDetails[index].instructions }}></div>
-                      </div>
+                {/* Displaying full recipe details if expanded */}
+                {expandedRecipe === meal.id && recipeDetails[meal.id] && (
+                  <div className="recipe-details">
+                    <div className="ingredients">
+                      <h4>Ingredients:</h4>
+                      <ul>
+                        {recipeDetails[meal.id].extendedIngredients.map((ingredient, i) => (
+                          <li key={i}>{ingredient.name}</li>
+                        ))}
+                      </ul>
                     </div>
-                  )}
-                </div>
-              </li>
-            ))}
-          </ul>
+
+                    <div className="instructions">
+                      <h4>Instructions:</h4>
+                      <div dangerouslySetInnerHTML={{ __html: recipeDetails[meal.id].instructions }}></div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))
         ) : (
           <p>No meals found.</p>
         )}
